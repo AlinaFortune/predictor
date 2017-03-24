@@ -221,8 +221,12 @@ def load_tables(db, schema, user_db):
         children = Set('Reaction', cascade_delete=True)
         parent = Optional('Reaction')
 
+        reaction_classes = Set('ReactionClass')
         molecules = Set('MoleculeReaction')
         conditions = Set('Conditions')
+        # FEAR - классификаторы
+        # словарь ключ значение {"FEAR":list[fear_strings]}
+        # На основе реакции возраващает список уникальных строк
         special = Optional(Json)
 
         def __init__(self, reaction, user, conditions=None, special=None, fingerprint=None, fear_string=None,
@@ -347,6 +351,11 @@ def load_tables(db, schema, user_db):
             return (fear_string, cgr) if get_cgr else fear_string
 
         @staticmethod
+        def get_fear_class():
+            pass
+            # return список FEARов реакционных центров
+
+        @staticmethod
         def get_mapless_fear(reaction, is_merged=False, get_merged=False):
             merged = reaction if is_merged else cgr_core.merge_mols(reaction)
             fear_string = '%s>>%s' % (Molecule.get_fear(merged['substrats']), Molecule.get_fear(merged['products']))
@@ -413,5 +422,11 @@ def load_tables(db, schema, user_db):
             if date is None:
                 date = datetime.utcnow()
             db.Entity.__init__(self, user_id=user.id, date=date, reaction=reaction, data=data)
+
+    class ReactionClass(db.Entity):
+        _table_ = '%s_ReactionClass' % schema if DEBUG else (schema, 'conditions')
+        id = PrimaryKey(int, auto=True)
+        reactions = Set('Reaction')
+
 
     return Molecule, Reaction, Conditions

@@ -19,7 +19,17 @@
 #  MA 02110-1301, USA.
 #
 
-class Substructure():
+
+class ReactionFinder():
+    # методы поиска для реакций
+    pass
+
+
+class Finder():
     @classmethod
-    def find_substructures(cls):
+    def find(cls):
+        """
+        :param
+        :return:
+        """
         pass

@@ -1,0 +1,2 @@
+class ReactionUtils():
+    pass
