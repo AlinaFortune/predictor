@@ -33,6 +33,10 @@ class Similarity(object):
     __cached_tree = {}
 
     @classmethod
+    def find_similar(cls):
+        pass
+
+    @classmethod
     def get_tree(cls):
         return cls.__cached_tree[cls.__class__.__name__]
 
